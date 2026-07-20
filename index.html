@@ -3,8 +3,106 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Echo Byte - IT Solutions</title>
+  <meta name="description" content="Echo Byte - Professional IT solutions, web design & development, and PC repair services in Pretoria. Fast, reliable technology tailored to your needs.">
+  <meta name="keywords" content="IT solutions, web design, web development, PC repair, software optimization, Pretoria, technology services">
+  <meta name="author" content="Echo Byte">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  
+  <!-- Open Graph Tags for Social Media 
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Echo Byte - IT Solutions & Web Development">
+  <meta property="og:description" content="Technology that actually works for you. Professional IT solutions, web design, and PC repair services in Pretoria.">
+  <meta property="og:url" content="https://echobyte.com">
+  <meta property="og:image" content="https://echobyte.com/images/Logo_transparntBG.png">
+  <meta property="og:locale" content="en_ZA">-->
+  
+  <!-- Twitter Card Tags 
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Echo Byte - IT Solutions & Web Development">
+  <meta name="twitter:description" content="Technology that actually works for you. Professional IT solutions and web design in Pretoria.">
+  <meta name="twitter:image" content="https://echobyte.com/images/Logo_transparntBG.png">-->
+  
+  <!-- Additional SEO Tags -->
+  <meta name="geo.placename" content="Pretoria, South Africa">
+  <meta name="geo.region" content="ZA-GP">
+  <link rel="canonical" href="https://echobyte.com">
+  
+  <title>Echo Byte - IT Solutions & Web Development in Pretoria</title>
+  
+  <!-- Performance Optimizations -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  
+  <!-- Favicon & App Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/Logo_transparntBG.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/Logo_transparntBG.png">
+  <link rel="apple-touch-icon" href="/images/Logo_transparntBG.png">
+  <meta name="theme-color" content="#000000">
+  
+  <!-- CSS with Critical Path Optimization -->
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="preload" as="style" href="/css/style.css">
+  
+  <!-- JSON-LD Structured Data for Google -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Echo Byte",
+    "description": "Professional IT solutions, web design & development, and PC repair services",
+    "url": "https://echobyte.com",
+    "logo": "https://echobyte.com/images/Logo_transparntBG.png",
+    "image": "https://echobyte.com/images/Logo_transparntBG.png",
+    "telephone": "+27-your-number",
+    "email": "info@echobyte.co.za",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Pretoria",
+      "addressRegion": "Gauteng",
+      "postalCode": "0084",
+      "addressCountry": "ZA"
+    },
+    "areaServed": {
+      "@type": "City",
+      "name": "Pretoria"
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "09:00",
+      "closes": "17:00"
+    },
+      <!-- "sameAs": [
+      "https://www.facebook.com/echobyte",
+      "https://www.linkedin.com/company/echobyte",
+      "https://www.instagram.com/echobyte" 
+    ] --> 
+    ,
+    "priceRange": "R$"
+  }
+  </script>
+  
+  <!-- Performance: Lazy Load Images -->
+  <script>
+    if ('IntersectionObserver' in window) {
+      document.addEventListener('DOMContentLoaded', () => {
+        const images = document.querySelectorAll('img[data-src]');
+        const imageObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target;
+              img.src = img.dataset.src;
+              img.removeAttribute('data-src');
+              imageObserver.unobserve(img);
+            }
+          });
+        });
+        images.forEach(img => imageObserver.observe(img));
+      });
+    }
+  </script>
 </head>
 <body>
 
