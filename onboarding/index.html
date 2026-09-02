@@ -17,7 +17,6 @@
     <div class="step-indicator" id="stepDots">
       <div class="step-dot active" id="dot0"></div>
       <div class="step-dot"        id="dot1"></div>
-      <div class="step-dot"        id="dot2"></div>
     </div>
 
     <!-- STEP 1 -->
@@ -252,7 +251,7 @@
 
     // ── State ──────────────────────────────────────
     let currentStep  = 0;
-    const totalSteps = 3;
+    const totalSteps = 2;
     let logoFileData   = null;
     let bannerFileData = null;
 
@@ -268,7 +267,7 @@
         }
       }
       document.getElementById('btnBack').style.display = n > 0 ? 'inline-block' : 'none';
-      document.getElementById('btnNext').textContent   = n === totalSteps - 1 ? 'Submit & Pay →' : 'Next →';
+      document.getElementById('btnNext').textContent = (n === totalSteps - 1) ? 'Submit →' : 'Next →';
       currentStep = n;
     }
 
@@ -310,6 +309,16 @@
         valid = false;
       } else {
         logoErr.style.display = 'none';
+      }
+
+      const agreeErr = document.getElementById('err-agreements');
+      const termsOk = document.getElementById('agreeTerms').checked;
+      const privacyOk = document.getElementById('agreePrivacy').checked;
+      if (!termsOk || !privacyOk) {
+        agreeErr.style.display = 'block';
+        valid = false;
+      } else {
+        agreeErr.style.display = 'none';
       }
 
       return valid;
@@ -420,14 +429,15 @@
         });
 
       if (dbError) {
-        btnNext.textContent = 'Submit & Pay →';
+        btnNext.textContent = 'Submit →';
         btnNext.disabled = false;
         alert('Iets het verkeerd gegaan. Probeer asseblief weer.');
         console.error(dbError);
         return;
       }
 
-      document.getElementById('step2').style.display    = 'none';
+      document.getElementById('step0').style.display    = 'none';
+      document.getElementById('step1').style.display    = 'none';
       document.getElementById('stepDots').style.display = 'none';
       document.getElementById('stepNav').style.display  = 'none';
       document.getElementById('successScreen').style.display = 'flex';
