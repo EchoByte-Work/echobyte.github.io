@@ -92,39 +92,38 @@
       <div class="contact-form fade-in fade-in-2">
         <h3 style="font-family:'Syne',sans-serif; font-size:1.3rem; font-weight:800; margin-bottom:24px;">Send us a message</h3>
 
-        <div class="form-group">
-          <label for="name">Your name</label>
-          <input type="text" id="name" name="name" placeholder="Jane Smith" required>
-        </div>
-
-        <div class="form-group">
-          <label for="email">Email address</label>
-          <input type="email" id="email" name="email" placeholder="jane@example.com" required>
-        </div>
-
-        <div class="form-group">
-          <label for="service">Service you're interested in</label>
-          <select id="service" name="service">
-            <option value="">— Select a service —</option>
-            <option>PC Build &amp; Upgrade</option>
-            <option>Software Development</option>
-            <option>Web Design &amp; Development</option>
-            <option>IT Support &amp; Maintenance</option>
-            <option>Something else</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" placeholder="Tell us a bit about what you need..." required></textarea>
-        </div>
-
-        <p style="margin-bottom:12px; font-size:0.85rem; color:var(--muted);">This static page cannot send form submissions directly yet. Please email us using the link below.</p>
-        <a class="btn btn-primary" style="width:100%; justify-content:center;" href="mailto:hello@echobyte.co.za?subject=Website%20Enquiry">
-          Email us directly →
-        </a>
-
-        <p id="form-feedback" style="margin-top:14px; font-size:0.85rem; color:var(--muted); text-align:center; display:none;"></p>
+        <form id="contact-form" novalidate>
+          <div class="form-group">
+            <label for="name">Your name</label>
+            <input type="text" id="name" name="name" placeholder="Jane Smith" autocomplete="name" maxlength="100" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" placeholder="jane@example.com" autocomplete="email" maxlength="254" required>
+          </div>
+          <div class="form-group">
+            <label for="service">Service you're interested in</label>
+            <select id="service" name="service">
+              <option value="">— Select a service —</option>
+              <option>PC Build &amp; Upgrade</option>
+              <option>Software Development</option>
+              <option>Web Design &amp; Development</option>
+              <option>IT Support &amp; Maintenance</option>
+              <option>Something else</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell us a bit about what you need..." maxlength="5000" required></textarea>
+          </div>
+          <div class="form-group" aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;">
+            <label for="website">Leave this field empty</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+          <button class="btn btn-primary" id="contact-submit" type="submit" style="width:100%;justify-content:center;">Send message →</button>
+          <p id="form-feedback" role="status" aria-live="polite" style="margin-top:14px;font-size:0.9rem;color:var(--muted);text-align:center;"></p>
+        </form>
+        <noscript><p>Please enable JavaScript to send this form, or email info@echobyte.co.za directly.</p></noscript>
       </div>
 
     </div>
@@ -217,6 +216,47 @@ const previewH = Math.max(preview ? preview.getBoundingClientRect().height : 60,
     if (diff < -25 && expanded) close();
   }, { passive: true });
 });
+</script>
+
+<script>
+(() => {
+  const form = document.getElementById("contact-form");
+  if (!form) return;
+  const button = document.getElementById("contact-submit");
+  const feedback = document.getElementById("form-feedback");
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    feedback.textContent = "";
+    if (!form.reportValidity()) return;
+    const payload = Object.fromEntries(new FormData(form).entries());
+    for (const key of ["name", "email", "service", "message", "website"]) {
+      payload[key] = String(payload[key] || "").trim();
+    }
+    button.disabled = true;
+    button.textContent = "Sending…";
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        if (response.status === 429) throw new Error("Too many attempts. Please wait a minute and try again.");
+        throw new Error(result.error || "We couldn't send your message. Please try again or email info@echobyte.co.za.");
+      }
+      form.reset();
+      feedback.textContent = "Thanks! Your message has been sent. We'll get back to you as soon as we can.";
+    } catch (error) {
+      feedback.textContent = error instanceof TypeError
+        ? "We couldn't connect to the message service. Please try again or email info@echobyte.co.za."
+        : error.message;
+    } finally {
+      button.disabled = false;
+      button.textContent = "Send message →";
+    }
+  });
+})();
 </script>
 
 <script>
