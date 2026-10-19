@@ -74,10 +74,23 @@ export default {
       return json({ error: "Too many attempts. Please wait a minute before trying again." }, 429);
     }
 
+    let rawBody;
+    try {
+      rawBody = await request.text();
+    } catch {
+      return json({ error: "The form data couldn't be read. Please refresh and try again." }, 400);
+    }
+    if (rawBody.length > 12_000) {
+      return json({ error: "Your message is too large. Please shorten it and try again." }, 413);
+    }
+
     let body;
     try {
-      body = await request.json();
+      body = JSON.parse(rawBody);
     } catch {
+      return json({ error: "The form data wasn't valid. Please refresh and try again." }, 400);
+    }
+    if (!body || typeof body !== "object" || Array.isArray(body)) {
       return json({ error: "The form data wasn't valid. Please refresh and try again." }, 400);
     }
 
